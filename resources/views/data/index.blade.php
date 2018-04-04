@@ -28,6 +28,8 @@
                         <input type="text" name="community_name" class="form-control" placeholder="小区名称"
                                value="{{ request('community_name')  }}">
                         <button type="submit" class="btn btn-default">搜索</button>
+                        <a href="/data-export"
+                           class="btn btn-xs btn-edit">导出</a>
                     </div>
                 </form>
             </div>
@@ -38,7 +40,7 @@
                     <thead>
                     <tr>
                         <th>
-                            入住时间
+                            入学时间
                         </th>
                         <th>
                             业户姓名
@@ -67,7 +69,7 @@
                                        value="{{ $item->name }}">
                                 <div class="table-span">{{ $item->name }} </div>
                             </td>
-                            <td style="width: 15%">
+                            <td style="width: 20%">
                                 <input type="text" class="form-control table-input" id="exampleInputEmail1"
                                        value="{{ $item->house_no }}">
                                 <div class="table-span">{{ $item->house_no }} </div>
@@ -75,9 +77,9 @@
                             <td style="width:35%">
                                 <input type="text" class="form-control table-input" id="exampleInputEmail1"
                                        value="{{ $item->community_name }}">
-                                <div class="table-span">{{ $item->ycommunity_nameear }} </div>
+                                <div class="table-span">{{ $item->community_name }} </div>
                             </td>
-                            <td style="width: 25%">
+                            <td style="width: 20%">
                                 <input type="text" class="form-control table-input" id="exampleInputEmail1"
                                        value="{{ $item->remarks }}">
                                 <div class="table-span">{{ $item->remarks }} </div>

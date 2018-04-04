@@ -14,7 +14,8 @@ class CreateDataTables extends Migration
     public function up()
     {
         Schema::create('data', function (Blueprint $table) {
-            $table->string('year')->index();
+            $table->increments('id');
+            $table->string('year')->nullable();
             $table->string('name')->nullable();
             $table->string('house_no')->nullable();
             $table->string('community_name')->nullable();

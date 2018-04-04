@@ -21,4 +21,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/data-init', 'DataController@initForm')->name('init-form');
 Route::post('/data-init', 'DataController@init')->name('init');
+Route::get('/data-export', 'DataController@export');
 Route::resource('/data', 'DataController');

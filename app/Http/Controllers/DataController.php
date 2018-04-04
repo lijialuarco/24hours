@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Data;
 use Illuminate\Http\Request;
 use Maatwebsite\ExcelLight\Excel;
+use Maatwebsite\ExcelLight\Writer;
 
 class DataController extends Controller
 {
@@ -67,7 +68,7 @@ class DataController extends Controller
     {
         $data = Data::find($id);
 
-        return view('data.edit', compact($data));
+        return view('data.edit', compact('data'));
     }
 
     /**
@@ -75,11 +76,34 @@ class DataController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+    //     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $find = Data::where([
+            'house_no'       => $request->房号,
+            'community_name' => $request->小区名称,
+        ])->first();
+
+        if ($find && $find->id != $id) {
+            return back()->withInput()->withErrors([
+                'excel' => "数据已存在(房号及小区),",
+            ]);
+        }
+
+
+        $data = Data::find($id);
+        $data->update([
+            'year'           => $request->year,
+            'name'           => $request->name,
+            'house_no'       => $request->house_no,
+            'community_name' => $request->community_name,
+            'remarks'        => $request->remarks,
+        ]);
+
+        return back()->withInput()->withErrors([
+            'excel' => "已更新",
+        ]);
     }
 
     /**
@@ -90,7 +114,7 @@ class DataController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 
 
@@ -157,4 +181,43 @@ class DataController extends Controller
             'excel' => "新加成功,导入{$i}条数据"
         ]);
     }
+
+
+    public function export(Excel $excel)
+    {
+        $headerData = ['入学年份', '业主姓名', '房号', '小区名称', '备注'];
+        $data = Data::all();
+
+
+        $data = $data->map(function ($order) {
+            return [
+                $order->year,
+                $order->name,
+                $order->house_no,
+                $order->community_name,
+                $order->reamrks,
+            ];
+        })->prepend($headerData);
+
+        $excel->create(function (Writer $writer) use ($data) {
+            $writer->sheet('data', function (Writer $sheet) use ($data) {
+                $sheet->rows($data->toArray());
+            });
+        })->export(storage_path(date('Y-m-d') . '导出数据.xlsx'));
+//
+        return response()->download(storage_path(date('Y-m-d') . '导出数据.xlsx'), date('Y-m-d') . '导出数据.xlsx');
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
