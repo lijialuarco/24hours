@@ -58,7 +58,7 @@
                     </thead>
                     <tbody>
                     @foreach($data as $item)
-                        <tr data-url="/data/{{ $item->year }}/edit">
+                        <tr data-url="/data/{{ $item->id }}/edit">
                             <td style="width: 10%">
                                 <input type="text" class="form-control table-input" id="exampleInputEmail1"
                                        value="{{ $item->year }}">
