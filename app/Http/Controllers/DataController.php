@@ -33,7 +33,7 @@ class DataController extends Controller
      */
     public function create()
     {
-        //
+        return view('data.create');
     }
 
     /**
@@ -44,7 +44,26 @@ class DataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $find = Data::where([
+            'house_no'       => $request->house_no,
+            'community_name' => $request->community_name,
+        ])->first();
+
+        if ($find) {
+            return back()->withInput()->withErrors([
+                'excel' => "数据已存在(房号及小区),重复数据为{$find->toJson()}",
+            ]);
+        }
+
+        Data::create([
+            'year'           => $request->year,
+            'name'           => $request->name,
+            'house_no'       => $request->house_no,
+            'community_name' => $request->community_name,
+            'remarks'        => $request->remarks,
+        ]);
+
+        return redirect('data');
     }
 
     /**
@@ -114,7 +133,7 @@ class DataController extends Controller
      */
     public function destroy($id)
     {
-
+        Data::destroy($id);
     }
 
 

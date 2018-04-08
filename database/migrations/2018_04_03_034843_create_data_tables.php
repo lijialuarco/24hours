@@ -21,6 +21,7 @@ class CreateDataTables extends Migration
             $table->string('community_name')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
